@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+
+    android:textAppearance="?android:attr/textAppearanceLarge"
+    android:text="Today-Sunny-88/63"
+    android:minHeight="?android:listPreferredItemHeight"
+    android:textSize="@dimen/abc_text_size_display_1_material"
+    android:gravity="center"
+    android:id="@+id/list_item_forecast_textView"
+    android:layout_gravity="center_horizontal"
+    android:layout_weight="0.08"/>
+<!-- From: file:/E:/AndroidStudioProjects/android_training/app/src/main/res/layout/list_item_forecast.xml -->
