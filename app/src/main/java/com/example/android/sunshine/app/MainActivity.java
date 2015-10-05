@@ -1,5 +1,8 @@
 package com.example.android.sunshine.app;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -45,40 +48,27 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent =new Intent(getApplicationContext(),SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
 
+        if (id == R.id.action_view_location_on_map) {
+            openPreferredLocationInMap();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openPreferredLocationInMap(){
+        String location = PreferenceManager.getDefaultSharedPreferences(this).getString(getString(R.string.pref_location_key),getString(R.string.pref_location_defaultValue));
+        Uri geolocation=Uri.parse("geo:0,0?").buildUpon()
+                .appendQueryParameter("q",location).build();
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geolocation);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 }
 
-//    /**
-//     * A placeholder fragment containing a simple view.
-//     */
-//    public static class ForecastFragment extends Fragment {
-//
-//        public ForecastFragment() {
-//        }
-//
-//        @Override
-//        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                                 Bundle savedInstanceState) {
-//            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-//            String[] forecastArray={"today-sunny 88/33",
-//                                    "tomorrow-sunny 89/44",
-//                                    "tomorrow-sunny 89/44",
-//                                    "tomorrow-sunny 89/44"
-//            };
-//            List<String> weekForecast=new ArrayList<String>(Arrays.asList(forecastArray));
-//            ArrayAdapter<String> mforecastAdapter =new ArrayAdapter<String>(
-//                    getActivity(),
-//                    R.layout.list_item_forecast,
-//                    R.id.list_item_forecast_textView,
-//                    weekForecast);
-//
-//            ListView listView =(ListView)rootView.findViewById(R.id.listview_forecast);
-//            listView.setAdapter(mforecastAdapter);
-//            return rootView;
-//        }
-//    }
-//}
