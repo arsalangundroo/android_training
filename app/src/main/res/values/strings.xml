@@ -6,5 +6,20 @@
     <string name="action_settings">Settings</string>
     <string name="action_refresh">Refresh</string>
     <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_activity_settings">Settingsactivity</string>
+    <string name="pref_location_title">Location</string>
+    <string name="pref_location_dialogTitle">Location</string>
+    <string name="pref_location_summary">Set up the location</string>
+    <string name="pref_location_key">Location</string>
+    <string name="pref_location_defaultValue">94034</string>
 
+    <string name="pref_units_title">Select a Units System</string>
+    <string name="pref_units_dialogTitle">Select a Unit</string>
+    <string name="pref_units_key">units</string>
+    <string name="pref_units_defaultValue"></string>
+    <string name="pref_units_metric_label">Metric</string>
+    <string name="pref_units_imperial_label">Imperial</string>
+    <string name="pref_units_metric_value">metric</string>
+    <string name="pref_units_imperial_value">imperial</string>
+    <string name="action_view_location_on_map">View location on Map</string>
 </resources>

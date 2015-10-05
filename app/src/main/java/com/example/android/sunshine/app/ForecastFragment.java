@@ -1,9 +1,11 @@
 package com.example.android.sunshine.app;
 
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,7 +29,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -90,12 +90,25 @@ public class ForecastFragment extends Fragment {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                FetchWeatherTask weatherTask=new FetchWeatherTask();
-                weatherTask.execute("94043");
+                updateWeatherForecast();
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateWeatherForecast();
+    }
+
+    private void updateWeatherForecast() {
+      FetchWeatherTask weatherTask=new FetchWeatherTask();
+      SharedPreferences sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+      String location=sharedPreferences.getString(getString(R.string.pref_location_key),getString(R.string.pref_location_defaultValue));
+      weatherTask.execute(location);
     }
 
   public class FetchWeatherTask extends AsyncTask<String,Void,String[]>{
@@ -128,7 +141,7 @@ public class ForecastFragment extends Fragment {
                     "http://api.openweathermap.org/data/2.5/forecast/daily?";
             final String QUERY_PARAM = "q";
             final String FORMAT_PARAM = "mode";
-            final String UNITS_PARAM = "units";
+            final String UNITS_PARAM = "metric";
             final String DAYS_PARAM = "cnt";
 
             // Construct the URL for the OpenWeatherMap query
@@ -230,6 +243,18 @@ public class ForecastFragment extends Fragment {
        */
       private String formatHighLows(double high, double low) {
           // For presentation, assume the user doesn't care about tenths of a degree.
+          SharedPreferences sharedPrefs =
+                  PreferenceManager.getDefaultSharedPreferences(getActivity());
+          String unitType = sharedPrefs.getString(
+                  getString(R.string.pref_units_key),
+                  getString(R.string.pref_units_metric_value));
+
+          if (unitType.equals(getString(R.string.pref_units_imperial_value))) {
+              high = (high * 1.8) + 32;
+              low = (low * 1.8) + 32;
+          } else if (!unitType.equals(getString(R.string.pref_units_metric_value))) {
+              Log.d(LOG_TAG, "Unit type not found: " + unitType);
+          }
           long roundedHigh = Math.round(high);
           long roundedLow = Math.round(low);
 
@@ -275,7 +300,7 @@ public class ForecastFragment extends Fragment {
           // now we work exclusively in UTC
           dayTime = new android.text.format.Time();
 
-          String[] resultStrs = new String[numDays];
+          String[] resultSts = new String[numDays];
           for(int i = 0; i < weatherArray.length(); i++) {
               // For now, using the format "Day, description, hi/low"
               String day;
@@ -304,13 +329,13 @@ public class ForecastFragment extends Fragment {
               double low = temperatureObject.getDouble(OWM_MIN);
 
               highAndLow = formatHighLows(high, low);
-              resultStrs[i] = day + " - " + description + " - " + highAndLow;
+              resultSts[i] = day + " - " + description + " - " + highAndLow;
           }
 
-          for (String s : resultStrs) {
+          for (String s : resultSts) {
               Log.v(LOG_TAG, "Forecast entry: " + s);
           }
-          return resultStrs;
+          return resultSts;
 
       }
 
