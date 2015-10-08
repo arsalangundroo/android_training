@@ -46,6 +46,8 @@ public class DetailActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent =new Intent(getApplicationContext(),SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
 
@@ -80,7 +82,7 @@ public class DetailActivity extends ActionBarActivity {
 
         @Override
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-            MenuItem menuItem=(MenuItem)menu.findItem(R.id.menu_item_share);
+            MenuItem menuItem=(MenuItem)menu.findItem(R.id.action_share);
             ShareActionProvider mShareActionProvider=(ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
             if(mShareActionProvider!=null) {
                 mShareActionProvider.setShareIntent(createShareForecastIntent());
