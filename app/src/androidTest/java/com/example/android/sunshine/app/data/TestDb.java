@@ -15,6 +15,7 @@
  */
 package com.example.android.sunshine.app.data;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
@@ -113,21 +114,45 @@ public class TestDb extends AndroidTestCase {
     public void testLocationTable() {
         // First step: Get reference to writable database
 
+        SQLiteDatabase db=new WeatherDbHelper(this.mContext).getWritableDatabase();
         // Create ContentValues of what you want to insert
         // (you can use the createNorthPoleLocationValues if you wish)
 
         // Insert ContentValues into database and get a row ID back
-
+        ContentValues testvalues =TestUtilities.createNorthPoleLocationValues();
+        long row_id=db.insert(WeatherContract.LocationEntry.TABLE_NAME,null, testvalues);
+        assertTrue("Error:Location insert operation failed",row_id!=-1);
         // Query the database and receive a Cursor back
 
+        String sortOrder =WeatherContract.LocationEntry._ID   + " DESC";
+
+        Cursor cursor = db.query(
+                WeatherContract.LocationEntry.TABLE_NAME,  // The table to query
+                null,                               // The columns to return
+                null,                                // The columns for the WHERE clause
+                null,                            // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                sortOrder                                 // The sort order
+        );
         // Move the cursor to a valid database row
+        assertTrue("Empty cursor returned. ", cursor.moveToFirst());
 
         // Validate data in resulting Cursor with the original ContentValues
+        long locationId = cursor.getInt(cursor.getColumnIndexOrThrow(WeatherContract.LocationEntry._ID));
+        String location_setting=cursor.getString(cursor.getColumnIndexOrThrow(WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING));
+        float coord_lat=cursor.getFloat(cursor.getColumnIndexOrThrow(WeatherContract.LocationEntry.COLUMN_COORD_LAT));
+        float coord_long=cursor.getFloat(cursor.getColumnIndexOrThrow(WeatherContract.LocationEntry.COLUMN_COORD_LONG));
+        TestUtilities.validateCurrentRecord("Values in cursor mismatched!!!", cursor, testvalues);
+
+        assertFalse("Error: More than one rows returned in cursor.",cursor.moveToNext());
         // (you can use the validateCurrentRecord function in TestUtilities to validate the
         // query if you like)
 
         // Finally, close the cursor and database
-
+        cursor.close();
+        db.close();
+        //return locationId;
     }
 
     /*
