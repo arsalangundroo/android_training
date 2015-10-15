@@ -113,8 +113,7 @@ public class TestDb extends AndroidTestCase {
     */
     public void testLocationTable() {
         // First step: Get reference to writable database
-
-
+        insertLocation();
     }
 
     /*
