@@ -5,12 +5,14 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
 public class MainActivity extends ActionBarActivity {
 
+    private final String LOG_TAG = MainActivity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,13 +53,22 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void openPreferredLocationInMap(){
-        String location = PreferenceManager.getDefaultSharedPreferences(this).getString(getString(R.string.pref_location_key),getString(R.string.pref_location_defaultValue));
-        Uri geolocation=Uri.parse("geo:0,0?").buildUpon()
-                .appendQueryParameter("q",location).build();
+        String location = Utility.getPreferredLocation(this);
+
+        // Using the URI scheme for showing a location found on a map.  This super-handy
+        // intent can is detailed in the "Common Intents" page of Android's developer site:
+        // http://developer.android.com/guide/components/intents-common.html#Maps
+        Uri geoLocation = Uri.parse("geo:0,0?").buildUpon()
+                .appendQueryParameter("q", location)
+                .build();
+
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(geolocation);
+        intent.setData(geoLocation);
+
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivity(intent);
+        } else {
+            Log.d(LOG_TAG, "Couldn't call " + location + ", no receiving apps installed!");
         }
     }
 }
