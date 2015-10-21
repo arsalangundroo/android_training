@@ -5,7 +5,7 @@
     android:textAppearance="?android:attr/textAppearanceLarge"
     android:text="Today-Sunny-88/63"
     android:minHeight="?android:listPreferredItemHeight"
-    android:textSize="@dimen/abc_text_size_display_1_material"
+    android:textSize="@dimen/abc_text_size_body_1_material"
     android:gravity="center"
     android:id="@+id/list_item_forecast_textView"
     android:layout_gravity="center_horizontal"
