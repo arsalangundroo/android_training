@@ -1,12 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
 
-    android:textAppearance="?android:attr/textAppearanceLarge"
-    android:text="Today-Sunny-88/63"
-    android:minHeight="?android:listPreferredItemHeight"
-    android:textSize="@dimen/abc_text_size_body_1_material"
-    android:gravity="center"
-    android:id="@+id/list_item_forecast_textView"
-    android:layout_gravity="center_horizontal"
-    android:layout_weight="0.08"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:orientation="horizontal" >
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Tomorrow"
+            android:minHeight="?android:listPreferredItemHeight"
+            android:textSize="@dimen/abc_text_size_body_1_material"
+            android:id="@+id/list_item_forecast_textView_day"
+            android:layout_weight="1"/>
+
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Sunny"
+            android:minHeight="?android:listPreferredItemHeight"
+            android:textSize="@dimen/abc_text_size_body_1_material"
+            android:id="@+id/list_item_forecast_textView_forecast"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="21 C"
+            android:minHeight="?android:listPreferredItemHeight"
+            android:textSize="@dimen/abc_text_size_body_1_material"
+            android:id="@+id/list_item_forecast_textView_high"
+            android:layout_weight="1"/>
+
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="11 C"
+            android:minHeight="?android:listPreferredItemHeight"
+            android:textSize="@dimen/abc_text_size_body_1_material"
+            android:id="@+id/list_item_forecast_textView_low"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+</LinearLayout>
+
+
+
