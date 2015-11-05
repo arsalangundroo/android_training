@@ -18,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.android.sunshine.app.data.WeatherContract;
@@ -159,19 +160,27 @@ public class DetailActivity extends ActionBarActivity  {
             Log.v(LOG_TAG, "In onLoadFinished");
              if (!data.moveToFirst()) { return; }
 
-            String dateString = Utility.formatDate(data.getLong(COL_WEATHER_DATE));
+            ImageView iconView = (ImageView)getView().findViewById(R.id.detail_icon);
+            iconView.setImageResource(R.drawable.ic_launcher);
 
+            String dateString = Utility.getFriendlyDayString(getActivity().getApplicationContext(), data.getLong(COL_WEATHER_DATE));
+            TextView dateView = (TextView)getView().findViewById(R.id.detail_date_textview);
+            dateView.setText(dateString);
             String weatherDescription = data.getString(COL_WEATHER_DESC);
+            TextView forecastView = (TextView)getView().findViewById(R.id.detail_forecast_textview);
+            forecastView.setText(weatherDescription);
+
             boolean isMetric = Utility.isMetric(getActivity());
+            String high = Utility.formatTemperature(getActivity().getApplicationContext(), data.getDouble(COL_WEATHER_MAX_TEMP), isMetric);
+            TextView highTempView = (TextView)getView().findViewById(R.id.detail_high_textview);
+            highTempView.setText(high);
+            String low = Utility.formatTemperature(getActivity().getApplicationContext(),data.getDouble(COL_WEATHER_MIN_TEMP), isMetric);
+            TextView lowTempView = (TextView)getView().findViewById(R.id.detail_high_textview);
+            lowTempView.setText(low);
 
-            String high = Utility.formatTemperature(data.getDouble(COL_WEATHER_MAX_TEMP), isMetric);
 
-            String low = Utility.formatTemperature(data.getDouble(COL_WEATHER_MIN_TEMP), isMetric);
 
-            mForecast = String.format("%s - %s - %s/%s", dateString, weatherDescription, high, low);
 
-            TextView detailTextView = (TextView)getView().findViewById(R.id.detail_text);
-            detailTextView.setText(mForecast);
             // If onCreateOptionsMenu has already happened, we need to update the share intent now.
             if (mShareActionProvider != null) {
                 mShareActionProvider.setShareIntent(createShareForecastIntent());

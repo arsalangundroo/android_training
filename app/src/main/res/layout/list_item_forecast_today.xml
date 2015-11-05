@@ -21,14 +21,12 @@
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="21 C"
             android:id="@+id/list_item_high_textview"
             android:gravity="center" />
 
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="11 C"
             android:id="@+id/list_item_low_textview" />
     </LinearLayout>
     <LinearLayout
