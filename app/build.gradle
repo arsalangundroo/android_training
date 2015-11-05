@@ -18,11 +18,12 @@ android {
         }
     }
     buildTypes.each {
-           it.buildConfigField 'String', 'OPEN_WEATHER_MAP_API_KEY', "\"e117f91bef75e8f02e515355e4818089\""
+        it.buildConfigField 'String', 'OPEN_WEATHER_MAP_API_KEY', "\"e117f91bef75e8f02e515355e4818089\""
     }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:21.0.2'
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:support-v4:21.0.3'
 }
