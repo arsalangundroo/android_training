@@ -31,8 +31,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private String mForecast;
 
     private static final String[] DETAIL_COLUMNS = {
-            WeatherContract.WeatherEntry.TABLE_NAME + ".",
-            WeatherContract.WeatherEntry._ID,
+            WeatherContract.WeatherEntry.TABLE_NAME + "."+ WeatherContract.WeatherEntry._ID,
             WeatherContract.WeatherEntry.COLUMN_DATE,
             WeatherContract.WeatherEntry.COLUMN_SHORT_DESC,
             WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
@@ -79,15 +78,15 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                              Bundle savedInstanceState) {
 
         View view=inflater.inflate(R.layout.fragment_detail, container, false);
-        mIconView = (ImageView)getView().findViewById(R.id.detail_icon);
-        mFriendlyDateView=(TextView)getView().findViewById(R.id.detail_day_textview);
-        mDateView=(TextView)getView().findViewById(R.id.detail_date_textview);
-        mDescriptionView=(TextView)getView().findViewById(R.id.detail_forecast_textview);
-        mHighTempView=(TextView)getView().findViewById(R.id.detail_high_textview);
-        mLowTempView=(TextView)getView().findViewById(R.id.detail_low_textview);
-        mHumidityView=(TextView)getView().findViewById(R.id.detail_humidity_textview);
-        mWindView=(TextView)getView().findViewById(R.id.detail_wind_textview);
-        mPressureView=(TextView)getView().findViewById(R.id.detail_pressure_textview);
+        mIconView = (ImageView)view.findViewById(R.id.detail_icon);
+        mFriendlyDateView=(TextView)view.findViewById(R.id.detail_day_textview);
+        mDateView=(TextView)view.findViewById(R.id.detail_date_textview);
+        mDescriptionView=(TextView)view.findViewById(R.id.detail_forecast_textview);
+        mHighTempView=(TextView)view.findViewById(R.id.detail_high_textview);
+        mLowTempView=(TextView)view.findViewById(R.id.detail_low_textview);
+        mHumidityView=(TextView)view.findViewById(R.id.detail_humidity_textview);
+        mWindView=(TextView)view.findViewById(R.id.detail_wind_textview);
+        mPressureView=(TextView)view.findViewById(R.id.detail_pressure_textview);
 
         return view;
     }
