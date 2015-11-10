@@ -3,6 +3,7 @@ package com.example.android.sunshine.app;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -25,10 +26,12 @@ import com.example.android.sunshine.app.data.WeatherContract;
 public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private final String LOG_TAG=DetailActivity.class.getSimpleName();
+    static final String DETAIL_URI = "URI";
     private static final String FORECAST_SHARE_HASHTAG="#Sunshine";
     private ShareActionProvider mShareActionProvider;
     private final static int DETAIL_LOADER =0;
     private String mForecast;
+    private Uri mUri;
 
     private static final String[] DETAIL_COLUMNS = {
             WeatherContract.WeatherEntry.TABLE_NAME + "."+ WeatherContract.WeatherEntry._ID,
@@ -77,6 +80,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        Bundle arguements=getArguments();
+        if(arguements!=null) {
+            mUri = arguements.getParcelable(DETAIL_URI);
+        }
+
         View view=inflater.inflate(R.layout.fragment_detail, container, false);
         mIconView = (ImageView)view.findViewById(R.id.detail_icon);
         mFriendlyDateView=(TextView)view.findViewById(R.id.detail_day_textview);
@@ -120,12 +128,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Log.v(LOG_TAG, "In onCreateLoader");
-        Intent intent=getActivity().getIntent();
-        if (intent == null || intent.getData() == null) {
+        if (mUri==null) {
             return null;
         }
         return new CursorLoader(getActivity(),
-                intent.getData(),
+                mUri,
                 DETAIL_COLUMNS,
                 null,
                 null,
@@ -176,4 +183,15 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) { }
+
+    void onLocationChanged( String newLocation ) {
+        // replace the uri, since the location has changed
+        Uri uri = mUri;
+        if (null != uri) {
+            long date = WeatherContract.WeatherEntry.getDateFromUri(uri);
+            Uri updatedUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(newLocation, date);
+            mUri = updatedUri;
+            getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
+        }
+    }
 }
