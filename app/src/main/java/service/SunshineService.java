@@ -314,10 +314,6 @@ public class SunshineService extends IntentService {
             Log.e(LOG_TAG, e.getMessage(), e);
             e.printStackTrace();
         }
-
-
-
-
     }
 
     public static class AlarmReceiver extends BroadcastReceiver{
