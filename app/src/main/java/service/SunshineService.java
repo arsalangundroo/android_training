@@ -11,8 +11,6 @@ import android.text.format.Time;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import com.example.android.sunshine.app.BuildConfig;
-import com.example.android.sunshine.app.FetchWeatherTask;
-import com.example.android.sunshine.app.Utility;
 import com.example.android.sunshine.app.data.WeatherContract;
 import org.json.JSONArray;
 import org.json.JSONException;
