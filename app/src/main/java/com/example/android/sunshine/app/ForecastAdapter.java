@@ -121,3 +121,5 @@ public class ForecastAdapter extends CursorAdapter {
         viewHolder.lowTempView.setText(Utility.formatTemperature(context,low, isMetric));
     }
 }
+
+
