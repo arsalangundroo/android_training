@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.android.sunshine.app.data.WeatherContract;
+import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
 
 
 public class MainActivity extends ActionBarActivity implements ForecastFragment.Callback{
@@ -40,6 +41,8 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
             mTwoPane = false;
             getSupportActionBar().setElevation(0f);
         }
+
+        SunshineSyncAdapter.initializeSyncAdapter(this);
     }
 
     @Override
