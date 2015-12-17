@@ -1,4 +1,4 @@
-package service;
+package com.example.android.sunshine.app.service;
 
 import android.app.IntentService;
 import android.content.BroadcastReceiver;

@@ -21,7 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.android.sunshine.app.data.WeatherContract;
-import service.SunshineService;
+import com.example.android.sunshine.app.service.SunshineService;
 
 
 /**
