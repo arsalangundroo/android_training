@@ -3,7 +3,15 @@
     package="com.example.android.sunshine.app" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Permissions required by the sync adapter -->
+    <uses-permission
+        android:name="android.permission.READ_SYNC_SETTINGS"/>
+    <uses-permission
+        android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+    <uses-permission
+        android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
 
+    <!-- The SyncAdapter service -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -36,16 +44,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.android.sunshine.app.MainActivity" />
         </activity>
-        <provider android:authorities="com.example.android.sunshine.app"
-            android:name=".data.WeatherProvider">
-        </provider>
-
-        <service android:name=".service.SunshineService"/>
-        <receiver android:name=".service.SunshineService$AlarmReceiver" android:enabled="true"/>
 
         <!-- SyncAdapter's dummy authentication service -->
         <service
-            android:name=".sync.SunshineAuthenticatorService"            >
+            android:name=".sync.SunshineAuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
@@ -60,15 +62,6 @@
             android:exported="false"
             android:syncable="true" />
 
-        <!-- Permissions required by the sync adapter -->
-        <uses-permission
-            android:name="android.permission.READ_SYNC_SETTINGS"/>
-        <uses-permission
-            android:name="android.permission.WRITE_SYNC_SETTINGS"/>
-        <uses-permission
-            android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
-
-        <!-- The SyncAdapter service -->
         <service
             android:name=".sync.SunshineSyncService"
             android:exported="true"
