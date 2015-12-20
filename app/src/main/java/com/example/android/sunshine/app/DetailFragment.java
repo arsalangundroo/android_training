@@ -158,9 +158,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         mDescriptionView.setText(description);
 
         boolean isMetric = Utility.isMetric(getActivity());
-        String high = Utility.formatTemperature(getActivity().getApplicationContext(), data.getDouble(COL_WEATHER_MAX_TEMP), isMetric);
+        String high = Utility.formatTemperature(getActivity().getApplicationContext(), data.getDouble(COL_WEATHER_MAX_TEMP));
         mHighTempView.setText(high);
-        String low = Utility.formatTemperature(getActivity().getApplicationContext(),data.getDouble(COL_WEATHER_MIN_TEMP), isMetric);
+        String low = Utility.formatTemperature(getActivity().getApplicationContext(),data.getDouble(COL_WEATHER_MIN_TEMP));
         mLowTempView.setText(low);
 
         // Read humidity from cursor and update view

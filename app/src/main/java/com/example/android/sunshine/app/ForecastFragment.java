@@ -1,10 +1,6 @@
 package com.example.android.sunshine.app;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SyncAdapterType;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
@@ -12,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,7 +28,8 @@ import com.example.android.sunshine.app.sync.SunshineSyncAdapter;
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private final static int FORECAST_LOADER =0;
-    private ForecastAdapter mforecastAdapter;
+    private ForecastAdapter mForecastAdapter;
+    public static final String LOG_TAG = ForecastFragment.class.getSimpleName();
 
     private static final String[] FORECAST_COLUMNS = {
             // In this case the id needs to be fully qualified with a table name, since
@@ -71,11 +69,11 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
 
-        mforecastAdapter=new ForecastAdapter(getActivity(),null,0);
+        mForecastAdapter =new ForecastAdapter(getActivity(),null,0);
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ListView listView =(ListView)rootView.findViewById(R.id.listview_forecast);
-        listView.setAdapter(mforecastAdapter);
+        listView.setAdapter(mForecastAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -117,8 +115,11 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.action_refresh:
-                updateWeatherForecast();
+//            case R.id.action_refresh:
+//                updateWeatherForecast();
+//                return true;
+            case R.id.action_map:
+                openPreferredLocationInMap();
                 return true;
 
             default:
@@ -135,6 +136,31 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         am.set(AlarmManager.RTC_WAKEUP,5000,pi);    */
 
         SunshineSyncAdapter.syncImmediately(getActivity());
+    }
+
+    private void openPreferredLocationInMap() {
+        // Using the URI scheme for showing a location found on a map.  This super-handy
+        // intent can is detailed in the "Common Intents" page of Android's developer site:
+        // http://developer.android.com/guide/components/intents-common.html#Maps
+        if (null != mForecastAdapter) {
+            Cursor c = mForecastAdapter.getCursor();
+            if (null != c) {
+                c.moveToPosition(0);
+                String posLat = c.getString(COL_COORD_LAT);
+                String posLong = c.getString(COL_COORD_LONG);
+                Uri geoLocation = Uri.parse("geo:" + posLat + "," + posLong);
+
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(geoLocation);
+
+                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivity(intent);
+                } else {
+                    Log.d(LOG_TAG, "Couldn't call " + geoLocation.toString() + ", no receiving apps installed!");
+                }
+            }
+
+        }
     }
 
     @Override
@@ -154,12 +180,12 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
-        mforecastAdapter.swapCursor(cursor);
+        mForecastAdapter.swapCursor(cursor);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mforecastAdapter.swapCursor(null);
+        mForecastAdapter.swapCursor(null);
     }
 
     public interface Callback {
